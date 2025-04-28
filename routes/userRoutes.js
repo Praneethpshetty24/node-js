@@ -12,6 +12,26 @@ router.post('/register',async(req,res)=>{
     }
 })
 
+router.post('/update',async(req,res)=>{
+    try{
+        const {id,name,email} = req.body;
+        const user = await User.findByIdAndUpdate(id,{name,email},{new:true});
+        res.status(200).json({message:"User updated successfully",user});
+    }catch(error){
+        res.status(500).json({message:"Error updating user",error:error.message})
+    }
+})
+
+router.post('/delete',async(req,res)=>{
+    try{
+        const {id} = req.body;
+        await User.findByIdAndDelete(id);
+        res.status(200).json({message:"User deleted successfully"});
+    }catch(error){
+        res.status(500).json({message:"Error deleting user",error:error.message})
+    }
+})
+
 router.get('/users',async(req,res)=>{
     try{
         const users = await User.find();
